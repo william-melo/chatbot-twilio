@@ -25,7 +25,7 @@ const visitasLugar = fs.readFileSync(visitasLugarPath, "utf8");
 const planEstandarPath = path.join(__dirname, "mensajes", "planEstandar.txt");
 const planEstandar = fs.readFileSync(planEstandarPath, "utf8");
 
-const validarNombreEmpresa = require("../utils/validarNombreEmpresa");
+const validarNombreEmpresa = require("./utils/validarNombreEmpresa");
 
 /**
  * Declaramos las conexiones de Mongo
