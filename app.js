@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const {
   createBot,
   createProvider,
@@ -9,7 +11,6 @@ const {
 const TwilioProvider = require("@bot-whatsapp/provider/twilio");
 const MongoAdapter = require("@bot-whatsapp/database/mongo");
 
-require("dotenv").config();
 const path = require("path");
 const fs = require("fs");
 
@@ -31,9 +32,8 @@ const validarNombreEmpresa = require("./utils/validarNombreEmpresa");
  * Declaramos las conexiones de Mongo
  */
 
-const MONGO_DB_URI =
-  "mongodb+srv://williammelo533:KYwbyt2tcEGM7bnQ@supercluster.qylavvv.mongodb.net/?retryWrites=true&w=majority&appName=SuperCluster";
-const MONGO_DB_NAME = "db_bot";
+const MONGO_DB_URI = process.env.MONGO_DB_URI;
+const MONGO_DB_NAME = process.env.MONGO_DB_NAME;
 
 let nombreEmpresa = "";
 let nombrePais = "";
@@ -154,8 +154,8 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
 
 const main = async () => {
   const adapterDB = new MongoAdapter({
-    dbUri: MONGO_DB_URI,
-    dbName: MONGO_DB_NAME,
+    dbUri: process.env.MONGO_DB_URI,
+    dbName: process.env.MONGO_DB_NAME,
   });
   const adapterFlow = createFlow([
     flowPrincipal,
@@ -168,9 +168,9 @@ const main = async () => {
     flujoPlanEstandar,
   ]);
   const adapterProvider = createProvider(TwilioProvider, {
-    accountSid: "AC67616d075f635c6e1b916b8fdac2dca6",
-    authToken: "6cad6975635c3d2afdde779e5ce98aa1",
-    vendorNumber: "+14155238886",
+    accountSid: process.env.ACC_SSID,
+    authToken: process.env.AUTH_TOKEN,
+    vendorNumber: process.env.VEND_NUMBER,
   });
 
   createBot({
