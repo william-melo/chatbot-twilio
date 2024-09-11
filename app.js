@@ -27,6 +27,7 @@ const planEstandarPath = path.join(__dirname, "mensajes", "planEstandar.txt");
 const planEstandar = fs.readFileSync(planEstandarPath, "utf8");
 
 const validarNombreEmpresa = require("./utils/validarNombreEmpresa");
+const { fetchLlmAnswer } = require("./utils/fetchLLM");
 
 /**
  * Declaramos las conexiones de Mongo
@@ -126,6 +127,35 @@ const flujoEmpresa = addKeyword(EVENTS.ACTION)
     }
   );
 
+const flujoAI = addKeyword(EVENTS.ACTION)
+  .addAnswer(
+    "¿En qué puedo ayudarte?",
+    { capture: true },
+    async (ctx, { flowDynamic }) => {
+      try {
+        const query = ctx.body;
+        console.log(query);
+
+        const response = await fetchLlmAnswer(query);
+        console.log(response);
+
+        if (response) {
+          console.log("flowDynamic");
+
+          await flowDynamic(response);
+        } else {
+          throw new Error("Respuesta no válida del servidor");
+        }
+      } catch (error) {
+        console.error("Error en flujoAI:", error); // Aquí capturamos cualquier error
+        await flowDynamic(
+          "Lo siento, algo salió mal. Por favor, inténtalo de nuevo más tarde."
+        );
+      }
+    }
+  )
+  .addAnswer("Respuesta de IA Completada");
+
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
   .addAnswer(
     "¡Hola! 👋🏻 Soy el asistente virtual de ViTurno. 🔔 Estoy aquí para ayudarte a encontrar el mejor plan de software de turno virtual para tu negocio."
@@ -135,12 +165,13 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
       "Para ofrecerte la mejor recomendación, ¿te parece si te hago unas preguntas rápidas sobre tu empresa?",
       "1️⃣ Sí, estoy de acuerdo",
       "2️⃣ No, gracias",
+      "3️⃣ LLm respuesta",
     ],
     {
       capture: true,
     },
     async (ctx, { fallBack, gotoFlow }) => {
-      if (!["1", "2"].includes(ctx.body)) {
+      if (!["1", "2", "3"].includes(ctx.body)) {
         return fallBack("Respuesta no válida, por favor intenta de nuevo.");
       }
       switch (ctx.body) {
@@ -148,6 +179,8 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
           return gotoFlow(flujoEmpresa);
         case "2":
           return gotoFlow(flujoNegación);
+        case "3":
+          return gotoFlow(flujoAI);
       }
     }
   );
@@ -166,6 +199,7 @@ const main = async () => {
     flujoVisitasLugar,
     flujoRecomendaciónPlan,
     flujoPlanEstandar,
+    flujoAI,
   ]);
   const adapterProvider = createProvider(TwilioProvider, {
     accountSid: process.env.ACC_SSID,
