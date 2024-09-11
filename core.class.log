@@ -1,0 +1,117 @@
+[handleMsg]:  {
+  SmsMessageSid: 'SM5e69e476c2dd90d7bef77993d2c618c5',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SM5e69e476c2dd90d7bef77993d2c618c5',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: 'hi',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SM5e69e476c2dd90d7bef77993d2c618c5',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: 'hi'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_9ceb1407-a80b-4c61-a728-4987106fdbe2',
+  keyword: 'key_7e209723-fa45-4ce1-ada2-e5861612eef6',
+  answer: '¡Hola! 👋🏻 Soy el asistente virtual de ViTurno. 🔔 Estoy aquí para ayudarte a encontrar el mejor plan de software de turno virtual para tu negocio.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '2518e8a021779b55821f0e03967aab8e'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_324ca178-fe77-4d86-a9a8-cc328128b317',
+  keyword: 'ans_9ceb1407-a80b-4c61-a728-4987106fdbe2',
+  answer: 'Para ofrecerte la mejor recomendación, ¿te parece si te hago unas preguntas rápidas sobre tu empresa?\n' +
+    '1️⃣ Sí, estoy de acuerdo\n' +
+    '2️⃣ No, gracias\n' +
+    '3️⃣ LLm respuesta',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '63bd76cb530a2f3307a33b92681dbd5e'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SM49243a25f9cbb2bfd03c33f42bf90aa4',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SM49243a25f9cbb2bfd03c33f42bf90aa4',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: '3',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SM49243a25f9cbb2bfd03c33f42bf90aa4',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: '3'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMbc4edbd428459a83c77176e54aa53858',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SMbc4edbd428459a83c77176e54aa53858',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: 'cual es su plan más barato?',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMbc4edbd428459a83c77176e54aa53858',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: 'cual es su plan más barato?'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_4e411d75-ea71-4e0e-8744-01fe296c7f6c',
+  keyword: 'ans_bb99b722-e032-478c-abfc-2b590c0fc7c5',
+  answer: 'Respuesta de IA Completada',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: 'e0a0c5c408ecbf0ff58d6d07c88ce1bc'
+}
