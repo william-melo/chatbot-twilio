@@ -127,34 +127,30 @@ const flujoEmpresa = addKeyword(EVENTS.ACTION)
     }
   );
 
-const flujoAI = addKeyword(EVENTS.ACTION)
-  .addAnswer(
-    "¿En qué puedo ayudarte?",
-    { capture: true },
-    async (ctx, { flowDynamic }) => {
-      try {
-        const query = ctx.body;
-        console.log(query);
+const flujoAI = addKeyword(EVENTS.ACTION).addAnswer(
+  "¿En qué puedo ayudarte?",
+  { capture: true },
+  async (ctx, { flowDynamic }) => {
+    try {
+      const query = ctx.body;
+      console.log(query);
 
-        const response = await fetchLlmAnswer(query);
-        console.log(response);
+      const response = await fetchLlmAnswer(query);
+      console.log(response);
 
-        if (response) {
-          console.log("flowDynamic");
-
-          await flowDynamic(response);
-        } else {
-          throw new Error("Respuesta no válida del servidor");
-        }
-      } catch (error) {
-        console.error("Error en flujoAI:", error); // Aquí capturamos cualquier error
-        await flowDynamic(
-          "Lo siento, algo salió mal. Por favor, inténtalo de nuevo más tarde."
-        );
+      if (response) {
+        await flowDynamic(response);
+      } else {
+        throw new Error("Respuesta no válida del servidor");
       }
+    } catch (error) {
+      console.error("Error en flujoAI:", error); // Aquí capturamos cualquier error
+      await flowDynamic(
+        "Lo siento, algo salió mal. Por favor, inténtalo de nuevo más tarde."
+      );
     }
-  )
-  .addAnswer("Respuesta de IA Completada");
+  }
+);
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
   .addAnswer(
