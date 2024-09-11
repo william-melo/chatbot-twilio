@@ -1,0 +1,278 @@
+[handleMsg]:  {
+  SmsMessageSid: 'SM80cad5b41c9a5ca14cab059c09a31636',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SM80cad5b41c9a5ca14cab059c09a31636',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: 'hellou!',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SM80cad5b41c9a5ca14cab059c09a31636',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: 'hellou!'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_3d8319ea-4390-4c48-a11e-a086a3cd1fdc',
+  keyword: 'key_7ba5f40d-6440-431c-a805-a5c29d8bcb02',
+  answer: '¡Hola! 👋🏻 Soy el asistente virtual de ViTurno. 🔔 Estoy aquí para ayudarte a encontrar el mejor plan de software de turno virtual para tu negocio.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '363bf79cb8cdf056a5a42664334e8ef0'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_8d39f546-05c0-4df6-a310-21d4dfe4be8b',
+  keyword: 'ans_3d8319ea-4390-4c48-a11e-a086a3cd1fdc',
+  answer: 'Para ofrecerte la mejor recomendación, ¿te parece si te hago unas preguntas rápidas sobre tu empresa?\n' +
+    '1️⃣ Sí, estoy de acuerdo\n' +
+    '2️⃣ No, gracias\n' +
+    '3️⃣ LLm respuesta',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '478569b36ce07dfbd3f4ca9120aca72b'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMe1aebddf5dfe8d84393188b9479ec8ea',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SMe1aebddf5dfe8d84393188b9479ec8ea',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: '1',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMe1aebddf5dfe8d84393188b9479ec8ea',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: '1'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SM79dea232566ba109149f62c5606f56bc',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SM79dea232566ba109149f62c5606f56bc',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: 'sdfgfdg',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SM79dea232566ba109149f62c5606f56bc',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: 'sdfgfdg'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SM81d5ab8b5e698abb2894787f16c57fd8',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SM81d5ab8b5e698abb2894787f16c57fd8',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: 'Colombia',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SM81d5ab8b5e698abb2894787f16c57fd8',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: 'Colombia'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMf25d3253d2a09e9831eaa550ac131bc0',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SMf25d3253d2a09e9831eaa550ac131bc0',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: '5',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMf25d3253d2a09e9831eaa550ac131bc0',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: '5'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMc63be679665c9c3105ab3ff8f6ae693d',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SMc63be679665c9c3105ab3ff8f6ae693d',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: '1',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMc63be679665c9c3105ab3ff8f6ae693d',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: '1'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SM1a31277ca9b24beefd2df07ef42be855',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SM1a31277ca9b24beefd2df07ef42be855',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: '3',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SM1a31277ca9b24beefd2df07ef42be855',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: '3'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMc2eadb47758b231379c6ff79ccee508b',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SMc2eadb47758b231379c6ff79ccee508b',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: 'hola',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMc2eadb47758b231379c6ff79ccee508b',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: 'hola'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_3d8319ea-4390-4c48-a11e-a086a3cd1fdc',
+  keyword: 'key_7ba5f40d-6440-431c-a805-a5c29d8bcb02',
+  answer: '¡Hola! 👋🏻 Soy el asistente virtual de ViTurno. 🔔 Estoy aquí para ayudarte a encontrar el mejor plan de software de turno virtual para tu negocio.',
+  options: {
+    media: null,
+    buttons: [],
+    capture: false,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: false
+  },
+  refSerialize: '363bf79cb8cdf056a5a42664334e8ef0'
+}
+[QUEUE_SE_ENVIO]:  {
+  ref: 'ans_8d39f546-05c0-4df6-a310-21d4dfe4be8b',
+  keyword: 'ans_3d8319ea-4390-4c48-a11e-a086a3cd1fdc',
+  answer: 'Para ofrecerte la mejor recomendación, ¿te parece si te hago unas preguntas rápidas sobre tu empresa?\n' +
+    '1️⃣ Sí, estoy de acuerdo\n' +
+    '2️⃣ No, gracias\n' +
+    '3️⃣ LLm respuesta',
+  options: {
+    media: null,
+    buttons: [],
+    capture: true,
+    child: null,
+    delay: 0,
+    idle: null,
+    ref: null,
+    nested: [],
+    keyword: {},
+    callback: true
+  },
+  refSerialize: '478569b36ce07dfbd3f4ca9120aca72b'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMa89e7407f82291baedb30c9617b5443a',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SMa89e7407f82291baedb30c9617b5443a',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: '3',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMa89e7407f82291baedb30c9617b5443a',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: '3'
+}
+[handleMsg]:  {
+  SmsMessageSid: 'SMd66179225aacc4d4e284c60e5cf378e0',
+  NumMedia: '0',
+  ProfileName: 'William Andres',
+  MessageType: 'text',
+  SmsSid: 'SMd66179225aacc4d4e284c60e5cf378e0',
+  WaId: '573188056828',
+  SmsStatus: 'received',
+  Body: 'donde están ubicadas las oficinas de ViTurno?',
+  To: 'whatsapp:+14155238886',
+  NumSegments: '1',
+  ReferralNumMedia: '0',
+  MessageSid: 'SMd66179225aacc4d4e284c60e5cf378e0',
+  AccountSid: 'AC67616d075f635c6e1b916b8fdac2dca6',
+  From: 'whatsapp:+573188056828',
+  ApiVersion: '2010-04-01',
+  from: '573188056828',
+  to: '14155238886',
+  body: 'donde están ubicadas las oficinas de ViTurno?'
+}
