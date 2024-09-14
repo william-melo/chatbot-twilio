@@ -28,6 +28,7 @@ const planEstandar = fs.readFileSync(planEstandarPath, "utf8");
 
 const validarNombreEmpresa = require("./utils/validarNombreEmpresa");
 const { fetchLlmAnswer } = require("./utils/fetchLLM");
+const { postClientData } = require("./utils/postInfoUsuario");
 
 /**
  * Declaramos las conexiones de Mongo
@@ -36,6 +37,9 @@ const { fetchLlmAnswer } = require("./utils/fetchLLM");
 const MONGO_DB_URI = process.env.MONGO_DB_URI;
 const MONGO_DB_NAME = process.env.MONGO_DB_NAME;
 
+let correoEmpresa = "";
+let numeroCliente = "";
+let nombreCliente = "";
 let nombreEmpresa = "";
 let nombrePais = "";
 let nombreIndustria = "";
@@ -56,7 +60,29 @@ const flujoPlanEstandar = addKeyword(EVENTS.ACTION)
   .addAnswer("Gracias por tu tiempo. ¡Que tengas un excelente día! 👋🏻");
 
 const flujoRecomendaciónPlan = addKeyword(EVENTS.ACTION)
-  .addAnswer("Gracias por compartir la información.")
+  .addAnswer(
+    "Gracias por compartir la información.",
+    async ({ flowDynamic }) => {
+      try {
+        const response = await postClientData({
+          nombreCliente,
+          numeroCliente,
+          correoEmpresa,
+          nombreEmpresa,
+          nombrePais,
+          nombreIndustria,
+          visitasDiarias,
+          visitaLugarFull,
+        });
+
+        // Aquí puedes manejar la respuesta del servidor
+        console.log("Respuesta del servidor:", response);
+      } catch (error) {
+        // Aquí manejas el error si la solicitud falla
+        console.error("Error al enviar los datos:", error);
+      }
+    }
+  )
   .addAction(async (ctx, { gotoFlow }) => {
     try {
       switch (visitasDiarias) {
@@ -91,8 +117,6 @@ const flujoVisitasDiarias = addKeyword(EVENTS.ACTION)
       return fallBack("Respuesta no válida, por favor intenta de nuevo.");
     }
     visitasDiarias = ctx.body;
-    console.log(visitasDiarias);
-    console.log("llegamos a las visitas diarias");
 
     return gotoFlow(flujoVisitasLugar);
   });
@@ -116,16 +140,38 @@ const flujoPais = addKeyword(EVENTS.ACTION).addAnswer(
   }
 );
 
-const flujoEmpresa = addKeyword(EVENTS.ACTION)
+const flujoNombreCliente = addKeyword(EVENTS.ACTION)
   .addAnswer("¡Perfecto! Comencemos entonces.")
   .addAnswer(
-    "¿Cuál es el nombre de tu empresa?",
+    "¿Cuál es tu nombre?",
     { capture: true },
     async (ctx, { gotoFlow, flowDynamic }) => {
-      nombreEmpresa = ctx.body;
-      return gotoFlow(flujoPais);
+      numeroCliente = ctx.from;
+      nombreCliente = ctx.body;
+
+      return gotoFlow(flujoCorreo);
     }
   );
+
+const flujoCorreo = addKeyword(EVENTS.ACTION).addAnswer(
+  "¿Cuál es tu correo de la empresa? Ej: software@electronika.info",
+  { capture: true },
+  async (ctx, { gotoFlow, flowDynamic }) => {
+    correoEmpresa = ctx.body;
+
+    return gotoFlow(flujoEmpresa);
+  }
+);
+
+const flujoEmpresa = addKeyword(EVENTS.ACTION).addAnswer(
+  "¿Cuál es el nombre de tu empresa?",
+  { capture: true },
+  async (ctx, { gotoFlow, flowDynamic }) => {
+    nombreEmpresa = ctx.body;
+
+    return gotoFlow(flujoPais);
+  }
+);
 
 const flujoAI = addKeyword(EVENTS.ACTION).addAnswer(
   "¿En qué puedo ayudarte?",
@@ -152,6 +198,10 @@ const flujoAI = addKeyword(EVENTS.ACTION).addAnswer(
   }
 );
 
+const flujoNegación = addKeyword(EVENTS.ACTION).addAnswer(
+  "No hay problema. Gracias por tu tiempo. Ten un buen día!"
+);
+
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
   .addAnswer(
     "¡Hola! 👋🏻 Soy el asistente virtual de ViTurno. 🔔 Estoy aquí para ayudarte a encontrar el mejor plan de software de turno virtual para tu negocio."
@@ -172,7 +222,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME)
       }
       switch (ctx.body) {
         case "1":
-          return gotoFlow(flujoEmpresa);
+          return gotoFlow(flujoNombreCliente);
         case "2":
           return gotoFlow(flujoNegación);
         case "3":
@@ -196,6 +246,9 @@ const main = async () => {
     flujoRecomendaciónPlan,
     flujoPlanEstandar,
     flujoAI,
+    flujoNegación,
+    flujoNombreCliente,
+    flujoCorreo,
   ]);
   const adapterProvider = createProvider(TwilioProvider, {
     accountSid: process.env.ACC_SSID,
