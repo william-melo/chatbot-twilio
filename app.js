@@ -23,12 +23,20 @@ const visitas = fs.readFileSync(visitasPath, "utf8");
 const visitasLugarPath = path.join(__dirname, "mensajes", "visitalugar.txt");
 const visitasLugar = fs.readFileSync(visitasLugarPath, "utf8");
 
-const planEstandarPath = path.join(__dirname, "mensajes", "planEstandar.txt");
-const planEstandar = fs.readFileSync(planEstandarPath, "utf8");
+const planBasicoPath = path.join(__dirname, "mensajes", "planBasico.txt");
+const planBasico = fs.readFileSync(planBasicoPath, "utf8");
 
-const validarNombreEmpresa = require("./utils/validarNombreEmpresa");
+const planProPath = path.join(__dirname, "mensajes", "planPro.txt");
+const planPro = fs.readFileSync(planProPath, "utf8");
+
 const { fetchLlmAnswer } = require("./utils/fetchLLM");
 const { postClientData } = require("./utils/postInfoUsuario");
+const {
+  esNombreLegitimo,
+  formatearNombre,
+} = require("./utils/validacionesNombre");
+const { formatearNombrePais } = require("./utils/validarNombrePais");
+const { formatearNombreEmpresa } = require("./utils/validarNombreEmpresa");
 
 /**
  * Declaramos las conexiones de Mongo
@@ -45,17 +53,27 @@ let nombrePais = "";
 let nombreIndustria = "";
 let visitasDiarias = "";
 let visitaLugarFull = "";
-const linkPlanEstandar = "https://plan-cards-full.vercel.app/";
+const linkPlanes = "https://plan-cards-full.vercel.app/";
 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-const flujoPlanEstandar = addKeyword(EVENTS.ACTION)
+const flujoPlanPro = addKeyword(EVENTS.ACTION)
   .addAnswer(
-    "Con base en lo que me has dicho, el plan más adecuado para ti es el Plan Estándar."
+    "Con base en lo que me has dicho, el plan más adecuado para ti es el Plan Pro."
   )
-  .addAnswer(planEstandar)
+  .addAnswer(planPro)
   .addAnswer(
-    `Puedes obtener más información y adquirir este plan en el siguiente enlace: ${linkPlanEstandar}`
+    `Puedes obtener más información y adquirir este plan en el siguiente enlace: ${linkPlanes}`
+  )
+  .addAnswer("Gracias por tu tiempo. ¡Que tengas un excelente día! 👋🏻");
+
+const flujoPlanBasico = addKeyword(EVENTS.ACTION)
+  .addAnswer(
+    "Con base en lo que me has dicho, el plan más adecuado para ti es el Plan Básico."
+  )
+  .addAnswer(planBasico)
+  .addAnswer(
+    `Puedes obtener más información y adquirir este plan en el siguiente enlace: ${linkPlanes}`
   )
   .addAnswer("Gracias por tu tiempo. ¡Que tengas un excelente día! 👋🏻");
 
@@ -87,13 +105,13 @@ const flujoRecomendaciónPlan = addKeyword(EVENTS.ACTION)
     try {
       switch (visitasDiarias) {
         case "1":
-          return gotoFlow(flujoPlanEstandar);
+          return gotoFlow(flujoPlanBasico);
         case "2":
-          return gotoFlow(flujoPlanPro);
+          return gotoFlow(flujoPlanBasico);
         case "3":
           return gotoFlow(flujoPlanPro);
         case "4":
-          return gotoFlow(flujoPlanPlus);
+          return gotoFlow(flujoPlanPro);
       }
     } catch (error) {
       console.log(error);
@@ -135,7 +153,8 @@ const flujoPais = addKeyword(EVENTS.ACTION).addAnswer(
   "¿En qué país se encuentra tu empresa?",
   { capture: true },
   async (ctx, { gotoFlow }) => {
-    nombrePais = ctx.body;
+    const nombrePaisFormateado = formatearNombrePais(ctx.body);
+    nombrePais = nombrePaisFormateado;
     return gotoFlow(flujoIndustria);
   }
 );
@@ -145,9 +164,16 @@ const flujoNombreCliente = addKeyword(EVENTS.ACTION)
   .addAnswer(
     "¿Cuál es tu nombre?",
     { capture: true },
-    async (ctx, { gotoFlow, flowDynamic }) => {
+    async (ctx, { gotoFlow, fallBack }) => {
+      const response = esNombreLegitimo(ctx.body);
+      if (!response) {
+        return fallBack(
+          "Tu nombre debe ser mayor a dos caracteres. Intenta de nuevo."
+        );
+      }
+      const nombreClienteFormateado = formatearNombre(ctx.body);
       numeroCliente = ctx.from;
-      nombreCliente = ctx.body;
+      nombreCliente = nombreClienteFormateado;
 
       return gotoFlow(flujoCorreo);
     }
@@ -156,7 +182,12 @@ const flujoNombreCliente = addKeyword(EVENTS.ACTION)
 const flujoCorreo = addKeyword(EVENTS.ACTION).addAnswer(
   "¿Cuál es tu correo de la empresa? Ej: software@electronika.info",
   { capture: true },
-  async (ctx, { gotoFlow, flowDynamic }) => {
+  async (ctx, { gotoFlow, fallBack }) => {
+    const response = esCorreoValido(ctx.body);
+    if (!response) {
+      return fallBack("Tu correo no es válido. Intenta de nuevo.");
+    }
+
     correoEmpresa = ctx.body;
 
     return gotoFlow(flujoEmpresa);
@@ -166,8 +197,9 @@ const flujoCorreo = addKeyword(EVENTS.ACTION).addAnswer(
 const flujoEmpresa = addKeyword(EVENTS.ACTION).addAnswer(
   "¿Cuál es el nombre de tu empresa?",
   { capture: true },
-  async (ctx, { gotoFlow, flowDynamic }) => {
-    nombreEmpresa = ctx.body;
+  async (ctx, { gotoFlow, fallBack }) => {
+    const nombreEmpresaFormateado = formatearNombreEmpresa(ctx.body);
+    nombreEmpresa = nombreEmpresaFormateado;
 
     return gotoFlow(flujoPais);
   }
@@ -244,11 +276,12 @@ const main = async () => {
     flujoVisitasDiarias,
     flujoVisitasLugar,
     flujoRecomendaciónPlan,
-    flujoPlanEstandar,
+    flujoPlanBasico,
     flujoAI,
     flujoNegación,
     flujoNombreCliente,
     flujoCorreo,
+    flujoPlanPro,
   ]);
   const adapterProvider = createProvider(TwilioProvider, {
     accountSid: process.env.ACC_SSID,

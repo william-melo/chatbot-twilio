@@ -1,4 +1,4 @@
-function formatearNombreEmpresa(nombre) {
+function formatearNombrePais(nombre) {
   // Eliminar espacios al principio y al final, y reemplazar múltiples espacios por uno solo.
   let nombreFormateado = nombre.trim().replace(/\s+/g, " ");
 
@@ -11,5 +11,5 @@ function formatearNombreEmpresa(nombre) {
 }
 
 module.exports = {
-  formatearNombreEmpresa,
+  formatearNombrePais,
 };
