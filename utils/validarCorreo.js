@@ -11,12 +11,6 @@ function esCorreoValido(email) {
   return regex.test(email);
 }
 
-// Ejemplo de uso
-const email = "usuario@dominio.com";
-const esValido = esCorreoValido(email);
-
-if (esValido) {
-  console.log("El correo es válido.");
-} else {
-  console.log("El correo no es válido.");
-}
+module.exports = {
+  esCorreoValido,
+};

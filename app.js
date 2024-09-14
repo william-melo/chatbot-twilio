@@ -37,6 +37,7 @@ const {
 } = require("./utils/validacionesNombre");
 const { formatearNombrePais } = require("./utils/validarNombrePais");
 const { formatearNombreEmpresa } = require("./utils/validarNombreEmpresa");
+const { esCorreoValido } = require("./utils/validarCorreo");
 
 /**
  * Declaramos las conexiones de Mongo
@@ -54,6 +55,27 @@ let nombreIndustria = "";
 let visitasDiarias = "";
 let visitaLugarFull = "";
 const linkPlanes = "https://plan-cards-full.vercel.app/";
+
+const fetchData = async () => {
+  try {
+    const response = await postClientData({
+      nombreCliente,
+      numeroCliente,
+      correoEmpresa,
+      nombreEmpresa,
+      nombrePais,
+      nombreIndustria,
+      visitasDiarias,
+      visitaLugarFull,
+    });
+
+    // Aquí puedes manejar la respuesta del servidor
+    console.log("Respuesta del servidor:", response);
+  } catch (error) {
+    // Aquí manejas el error si la solicitud falla
+    console.error("Error al enviar los datos:", error);
+  }
+};
 
 /*--------------------------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -78,30 +100,9 @@ const flujoPlanBasico = addKeyword(EVENTS.ACTION)
   .addAnswer("Gracias por tu tiempo. ¡Que tengas un excelente día! 👋🏻");
 
 const flujoRecomendaciónPlan = addKeyword(EVENTS.ACTION)
-  .addAnswer(
-    "Gracias por compartir la información.",
-    async ({ flowDynamic }) => {
-      try {
-        const response = await postClientData({
-          nombreCliente,
-          numeroCliente,
-          correoEmpresa,
-          nombreEmpresa,
-          nombrePais,
-          nombreIndustria,
-          visitasDiarias,
-          visitaLugarFull,
-        });
-
-        // Aquí puedes manejar la respuesta del servidor
-        console.log("Respuesta del servidor:", response);
-      } catch (error) {
-        // Aquí manejas el error si la solicitud falla
-        console.error("Error al enviar los datos:", error);
-      }
-    }
-  )
+  .addAnswer("Gracias por compartir la información.")
   .addAction(async (ctx, { gotoFlow }) => {
+    fetchData();
     try {
       switch (visitasDiarias) {
         case "1":
@@ -120,34 +121,46 @@ const flujoRecomendaciónPlan = addKeyword(EVENTS.ACTION)
 
 const flujoVisitasLugar = addKeyword(EVENTS.ACTION)
   .addAnswer("¿Cómo suelen visitar las personas tu lugar?")
-  .addAnswer(visitasLugar, { capture: true }, async (ctx, { gotoFlow }) => {
-    if (!["1", "2", "3"].includes(ctx.body)) {
-      return fallBack("Respuesta no válida, por favor intenta de nuevo.");
+  .addAnswer(
+    visitasLugar,
+    { capture: true },
+    async (ctx, { gotoFlow, fallBack }) => {
+      if (!["1", "2", "3"].includes(ctx.body)) {
+        return fallBack("Respuesta no válida, por favor intenta de nuevo.");
+      }
+      visitaLugarFull = ctx.body;
+      return gotoFlow(flujoRecomendaciónPlan);
     }
-    visitaLugarFull = ctx.body;
-    return gotoFlow(flujoRecomendaciónPlan);
-  });
+  );
 
 const flujoVisitasDiarias = addKeyword(EVENTS.ACTION)
   .addAnswer("¿Cuántas personas visitan tus instalaciones diariamente?")
-  .addAnswer(visitas, { capture: true }, async (ctx, { gotoFlow }) => {
-    if (!["1", "2", "3", "4"].includes(ctx.body)) {
-      return fallBack("Respuesta no válida, por favor intenta de nuevo.");
-    }
-    visitasDiarias = ctx.body;
+  .addAnswer(
+    visitas,
+    { capture: true },
+    async (ctx, { gotoFlow, fallBack }) => {
+      if (!["1", "2", "3", "4"].includes(ctx.body)) {
+        return fallBack("Respuesta no válida, por favor intenta de nuevo.");
+      }
+      visitasDiarias = ctx.body;
 
-    return gotoFlow(flujoVisitasLugar);
-  });
+      return gotoFlow(flujoVisitasLugar);
+    }
+  );
 
 const flujoIndustria = addKeyword(EVENTS.ACTION)
   .addAnswer("¿Qué tipo de industria representa tu empresa?")
-  .addAnswer(industrias, { capture: true }, async (ctx, { gotoFlow }) => {
-    if (!["1", "2", "3", "4", "5", "6"].includes(ctx.body)) {
-      return fallBack("Respuesta no válida, por favor intenta de nuevo.");
+  .addAnswer(
+    industrias,
+    { capture: true },
+    async (ctx, { gotoFlow, fallBack }) => {
+      if (!["1", "2", "3", "4", "5", "6"].includes(ctx.body)) {
+        return fallBack("Respuesta no válida, por favor intenta de nuevo.");
+      }
+      nombreIndustria = ctx.body;
+      return gotoFlow(flujoVisitasDiarias);
     }
-    nombreIndustria = ctx.body;
-    return gotoFlow(flujoVisitasDiarias);
-  });
+  );
 
 const flujoPais = addKeyword(EVENTS.ACTION).addAnswer(
   "¿En qué país se encuentra tu empresa?",
@@ -197,7 +210,7 @@ const flujoCorreo = addKeyword(EVENTS.ACTION).addAnswer(
 const flujoEmpresa = addKeyword(EVENTS.ACTION).addAnswer(
   "¿Cuál es el nombre de tu empresa?",
   { capture: true },
-  async (ctx, { gotoFlow, fallBack }) => {
+  async (ctx, { gotoFlow }) => {
     const nombreEmpresaFormateado = formatearNombreEmpresa(ctx.body);
     nombreEmpresa = nombreEmpresaFormateado;
 
