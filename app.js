@@ -38,6 +38,7 @@ const {
 const { formatearNombrePais } = require("./utils/validarNombrePais");
 const { formatearNombreEmpresa } = require("./utils/validarNombreEmpresa");
 const { esCorreoValido } = require("./utils/validarCorreo");
+const { obtenerSaludo } = require("./utils/obtenerSaludo");
 
 /**
  * Declaramos las conexiones de Mongo
@@ -45,6 +46,14 @@ const { esCorreoValido } = require("./utils/validarCorreo");
 
 const MONGO_DB_URI = process.env.MONGO_DB_URI;
 const MONGO_DB_NAME = process.env.MONGO_DB_NAME;
+
+let saludoActual = obtenerSaludo();
+
+function actualizarSaludo() {
+  saludoActual = obtenerSaludo();
+}
+
+setInterval(actualizarSaludo, 1300000);
 
 let correoEmpresa = "";
 let numeroCliente = "";
@@ -105,13 +114,13 @@ const flujoRecomendaciónPlan = addKeyword(EVENTS.ACTION)
     fetchData();
     try {
       switch (visitasDiarias) {
-        case "1":
+        case "0-50":
           return gotoFlow(flujoPlanBasico);
-        case "2":
+        case "50-150":
           return gotoFlow(flujoPlanBasico);
-        case "3":
+        case "150-500":
           return gotoFlow(flujoPlanPro);
-        case "4":
+        case "500+":
           return gotoFlow(flujoPlanPro);
       }
     } catch (error) {
@@ -128,7 +137,14 @@ const flujoVisitasLugar = addKeyword(EVENTS.ACTION)
       if (!["1", "2", "3"].includes(ctx.body)) {
         return fallBack("Respuesta no válida, por favor intenta de nuevo.");
       }
-      visitaLugarFull = ctx.body;
+      if (ctx.body == "1") {
+        visitaLugarFull = "Cita Previa";
+      } else if (ctx.body == "2") {
+        visitaLugarFull = "Orden de llegada";
+      } else {
+        visitaLugarFull = "Ambos";
+      }
+
       return gotoFlow(flujoRecomendaciónPlan);
     }
   );
@@ -142,7 +158,15 @@ const flujoVisitasDiarias = addKeyword(EVENTS.ACTION)
       if (!["1", "2", "3", "4"].includes(ctx.body)) {
         return fallBack("Respuesta no válida, por favor intenta de nuevo.");
       }
-      visitasDiarias = ctx.body;
+      if (ctx.body == "1") {
+        visitasDiarias = "0-50";
+      } else if (ctx.body == "2") {
+        visitasDiarias = "50-150";
+      } else if (ctx.body == "3") {
+        visitasDiarias = "150-500";
+      } else {
+        visitasDiarias = "500+";
+      }
 
       return gotoFlow(flujoVisitasLugar);
     }
@@ -157,7 +181,20 @@ const flujoIndustria = addKeyword(EVENTS.ACTION)
       if (!["1", "2", "3", "4", "5", "6"].includes(ctx.body)) {
         return fallBack("Respuesta no válida, por favor intenta de nuevo.");
       }
-      nombreIndustria = ctx.body;
+
+      if (ctx.body == "1") {
+        nombreIndustria = "Salud";
+      } else if (ctx.body == "2") {
+        nombreIndustria = "Gobierno";
+      } else if (ctx.body == "3") {
+        nombreIndustria = "Banca";
+      } else if (ctx.body == "4") {
+        nombreIndustria = "Educación";
+      } else if (ctx.body == "5") {
+        nombreIndustria = "Comercio";
+      } else {
+        nombreIndustria = "Bienestar";
+      }
       return gotoFlow(flujoVisitasDiarias);
     }
   );
@@ -193,7 +230,7 @@ const flujoNombreCliente = addKeyword(EVENTS.ACTION)
   );
 
 const flujoCorreo = addKeyword(EVENTS.ACTION).addAnswer(
-  "¿Cuál es tu correo de la empresa? Ej: software@electronika.info",
+  "¿Cuál es tu correo corporativo?",
   { capture: true },
   async (ctx, { gotoFlow, fallBack }) => {
     const response = esCorreoValido(ctx.body);
@@ -248,10 +285,9 @@ const flujoNegación = addKeyword(EVENTS.ACTION).addAnswer(
 );
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME)
+  .addAnswer(saludoActual)
   .addAnswer(
-    "¡Hola! 👋🏻 Soy el asistente virtual de ViTurno. 🔔 Estoy aquí para ayudarte a encontrar el mejor plan de software de turno virtual para tu negocio."
-  )
-  .addAnswer(
+    // Espera 1,5 segundos antes de continuar
     [
       "Para ofrecerte la mejor recomendación, ¿te parece si te hago unas preguntas rápidas sobre tu empresa?",
       "1️⃣ Sí, estoy de acuerdo",
